@@ -1,0 +1,15 @@
+**/node_modules/
+frontend/dist/
+backend/.env
+.env
+backups/
+imports/
+*.log
+.vscode/
+.idea/
+.env.*
+!.env.example
+backend/.env.*
+!backend/.env.example
+INICIAR-RAPIELECTRO.bat
+frontend/public/rappi-electro-logo.png
