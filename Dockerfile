@@ -5,13 +5,14 @@ RUN npm ci
 COPY frontend ./
 RUN npm run build
 
-FROM node:22-alpine
+FROM python:3.12-slim
 WORKDIR /app/backend
-COPY backend/package*.json ./
-RUN npm ci --omit=dev
-COPY backend ./
+COPY backend/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/app ./app
 COPY database /app/database
 COPY --from=frontend /app/frontend/dist /app/frontend/dist
-ENV NODE_ENV=production
+RUN useradd --create-home stock
+USER stock
 EXPOSE 3000
-CMD ["sh", "-c", "npm run setup && npm start"]
+CMD ["sh", "-c", "python -m app.setup && uvicorn app.main:app --host 0.0.0.0 --port 3000"]

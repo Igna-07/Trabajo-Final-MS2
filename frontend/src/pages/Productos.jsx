@@ -91,6 +91,16 @@ export default function Productos() {
   };
 
   const guardarProducto = async () => {
+    if (!formulario.marca.trim() || formulario.marca.trim().length > 120 || !formulario.nombre.trim() || formulario.nombre.trim().length > 180) {
+      alert('Ingresá una marca (hasta 120 caracteres) y un nombre (hasta 180 caracteres).');
+      return;
+    }
+    if (['costo', 'precio', 'stock'].some((key) => String(formulario[key]).trim() === '' || !Number.isFinite(Number(formulario[key])) || Number(formulario[key]) < 0)
+      || !Number.isInteger(Number(formulario.stock)) || Number(formulario.stock) > 1000000000
+      || ['costo', 'precio'].some((key) => Number(formulario[key]) > 999999999999 || !/^\d+(\.\d{1,2})?$/.test(String(formulario[key])))) {
+      alert('Ingresá costo y precio válidos con hasta dos decimales, y stock entero no negativo.');
+      return;
+    }
     try {
       const url = productoEditando
         ? `/api/productos/${productoEditando.id}`

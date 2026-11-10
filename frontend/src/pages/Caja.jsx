@@ -34,6 +34,7 @@ export default function Caja() {
   const abrirCaja = async () => {
     const saldo = window.prompt("Saldo inicial de caja:", "0");
     if (saldo === null) return;
+    if (!/^\d+(\.\d{1,2})?$/.test(saldo.trim())) { alert('Ingresá un importe no negativo con hasta dos decimales.'); return; }
     try {
       await leerRespuesta(await apiFetch("/api/caja/abrir", {
         method: "POST",
@@ -48,6 +49,7 @@ export default function Caja() {
   const cerrarCaja = async () => {
     const saldo = window.prompt("Dinero contado al cerrar la caja:");
     if (saldo === null) return;
+    if (!/^\d+(\.\d{1,2})?$/.test(saldo.trim())) { alert('Ingresá un importe no negativo con hasta dos decimales.'); return; }
     try {
       const cierre = await leerRespuesta(await apiFetch("/api/caja/cerrar", {
         method: "POST",

@@ -20,6 +20,7 @@ import Presupuestos from "./pages/Presupuestos";
 import Administracion from "./pages/Administracion";
 import PlanillasClientes from "./pages/PlanillasClientes";
 import Estadisticas from "./pages/Estadisticas";
+import Reportes from "./pages/Reportes";
 
 const protegida = (element, roles) => (
   <ProtectedRoute roles={roles}>{element}</ProtectedRoute>
@@ -32,6 +33,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={protegida(<Dashboard />, ["ADMIN"])} />
         <Route path="/statistics" element={protegida(<Estadisticas />, ["ADMIN"])} />
+        <Route path="/reports" element={protegida(<Reportes />, ["ADMIN"])} />
         <Route path="/products" element={protegida(<Productos />)} />
         <Route path="/customers" element={protegida(<Clientes />)} />
         <Route path="/sales" element={protegida(<Ventas />)} />
