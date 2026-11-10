@@ -45,7 +45,9 @@ export default function PlanillasClientes() {
   };
 
   useEffect(() => {
-    cargarListas().catch((error) => alert(error.message));
+    Promise.all([apiFetch('/api/planillas').then(leerRespuesta), apiFetch('/api/clientes').then(leerRespuesta)])
+      .then(([planillas, clientes]) => { setPlanillas(planillas); setClientes(clientes); })
+      .catch((error) => alert(error.message));
   }, []);
 
   const nuevaPlanilla = () => {

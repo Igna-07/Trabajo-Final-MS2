@@ -45,6 +45,8 @@ export default function Login() {
 
         <input
           type="email"
+          required
+          autoComplete="username"
           placeholder="Correo"
           className="w-full border p-3 mb-4 rounded"
           value={email}
@@ -53,6 +55,8 @@ export default function Login() {
 
         <input
           type="password"
+          required
+          autoComplete="current-password"
           placeholder="Contraseña"
           className="w-full border p-3 mb-4 rounded"
           value={password}

@@ -43,6 +43,11 @@ export default function Administracion() {
   }, []);
 
   const crearUsuario = async () => {
+    if (!nuevoUsuario.nombre.trim() || nuevoUsuario.nombre.trim().length > 120
+      || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nuevoUsuario.email) || nuevoUsuario.password.length < 10) {
+      alert('Ingresá nombre, email válido y una contraseña de al menos 10 caracteres.');
+      return;
+    }
     try {
       await leerRespuesta(await apiFetch("/api/administracion/usuarios", {
         method: "POST",
@@ -68,6 +73,10 @@ export default function Administracion() {
   };
 
   const guardarRecargo = async (recargo) => {
+    if (String(recargo.porcentaje).trim() === '' || !Number.isFinite(Number(recargo.porcentaje)) || Number(recargo.porcentaje) < 0 || Number(recargo.porcentaje) > 500) {
+      alert('El recargo debe estar entre 0 y 500%.');
+      return;
+    }
     try {
       await leerRespuesta(await apiFetch(`/api/administracion/recargos/${recargo.id}`, {
         method: "PUT",

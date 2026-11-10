@@ -1,3 +1,4 @@
+import { fechaLocal } from '../services/fechas';
 import { useEffect, useState } from "react";
 import MainLayout from "../layout/MainLayout";
 import { apiFetch, leerRespuesta } from "../services/api";
@@ -64,7 +65,7 @@ export default function Presupuestos() {
         ${encabezadoImpresion(`Presupuesto N° ${presupuesto.id}`, "Documento comercial no válido como factura")}
         <p><strong>Cliente:</strong> ${presupuesto.nombre} ${presupuesto.apellido || ""}</p>
         <p><strong>Fecha:</strong> ${new Date(presupuesto.fecha).toLocaleDateString("es-AR")}</p>
-        <p><strong>Válido hasta:</strong> ${new Date(presupuesto.valido_hasta).toLocaleDateString("es-AR")}</p>
+        <p><strong>Válido hasta:</strong> ${fechaLocal(presupuesto.valido_hasta).toLocaleDateString("es-AR")}</p>
         <table><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr></thead>
         <tbody>${filas}</tbody></table>
         <p class="total"><strong>Total: $${Number(presupuesto.total).toLocaleString("es-AR")}</strong></p>
@@ -119,7 +120,7 @@ export default function Presupuestos() {
               <td className="border p-2">#{item.id}</td>
               <td className="border p-2">{item.nombre} {item.apellido}</td>
               <td className="border p-2">${Number(item.total).toLocaleString("es-AR")}</td>
-              <td className="border p-2">{new Date(item.valido_hasta).toLocaleDateString("es-AR")}</td>
+              <td className="border p-2">{fechaLocal(item.valido_hasta).toLocaleDateString("es-AR")}</td>
               <td className="border p-2">{item.estado}</td>
               <td className="border p-2"><button type="button" onClick={() => imprimirPresupuesto(item.id)} className="bg-blue-600 text-white px-3 py-1 rounded">Imprimir</button></td>
             </tr>

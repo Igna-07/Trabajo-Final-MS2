@@ -36,6 +36,13 @@ export default function Clientes() {
   };
 
   const guardarCliente = async () => {
+    if (!formulario.nombre?.trim() || formulario.nombre.trim().length > 120
+      || (formulario.apellido?.length || 0) > 120 || (formulario.telefono?.length || 0) > 50
+      || (formulario.direccion?.length || 0) > 2000
+      || (formulario.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formulario.email))) {
+      alert('Revisá nombre, email y longitud de los datos del cliente.');
+      return;
+    }
     const url = clienteEditando
       ? `/api/clientes/${clienteEditando.id}`
       : "/api/clientes";

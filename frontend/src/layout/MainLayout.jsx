@@ -35,6 +35,7 @@ export default function MainLayout({ children }) {
         </div>
 
         <nav className="space-y-4">
+          {admin && <div className="flex gap-2"><FileText size={20} /><Link to="/reports">Reportes</Link></div>}
           {admin && (
             <div className="flex gap-2">
               <Home size={20} />

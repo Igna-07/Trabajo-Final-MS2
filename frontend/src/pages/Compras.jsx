@@ -49,6 +49,11 @@ export default function Compras() {
   };
 
   const registrarCompra = async () => {
+    if (!proveedorId || !productoId || !Number.isInteger(Number(cantidad)) || Number(cantidad) < 1
+      || String(costo).trim() === '' || !/^\d+(\.\d{1,2})?$/.test(String(costo)) || Number(costo) > 999999999999) {
+      alert('Seleccioná proveedor y producto, una cantidad entera positiva y un costo válido.');
+      return;
+    }
     try {
       await leerRespuesta(await apiFetch("/api/operaciones/compras", {
         method: "POST",

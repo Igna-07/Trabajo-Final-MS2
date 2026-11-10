@@ -1,3 +1,4 @@
+import { fechaLocal } from '../services/fechas';
 import { useEffect, useState } from "react";
 import MainLayout from "../layout/MainLayout";
 import { apiFetch, leerRespuesta } from "../services/api";
@@ -164,7 +165,7 @@ export default function CuentasPorCobrar() {
         <p><strong>Fecha de cobro:</strong> ${new Date(comprobante.fecha).toLocaleString("es-AR")}</p>
         <div class="fila"><span>Venta</span><strong>#${comprobante.venta_id}</strong></div>
         <div class="fila"><span>Cheque</span><strong>Cheque ${comprobante.numero_cheque} de ${comprobante.cantidad_cheques}</strong></div>
-        <div class="fila"><span>Vencimiento</span><strong>${new Date(comprobante.fecha_vencimiento).toLocaleDateString("es-AR")}</strong></div>
+        <div class="fila"><span>Vencimiento</span><strong>${fechaLocal(comprobante.fecha_vencimiento).toLocaleDateString("es-AR")}</strong></div>
         <p><strong>Estado:</strong> Cobrado</p>
         <p><strong>Cobrado por:</strong> ${comprobante.cobrado_por}</p>
         <p class="pie">Comprobante interno no válido como factura fiscal.</p>
@@ -361,20 +362,20 @@ export default function CuentasPorCobrar() {
     totalPendienteCuotas
   );
   const vencidas = pendientes.filter(
-    (cuota) => new Date(cuota.fecha_vencimiento) < hoy
+    (cuota) => fechaLocal(cuota.fecha_vencimiento) < hoy
   );
   const proximas = pendientes.filter((cuota) => {
     const dias = Math.ceil(
-      (new Date(cuota.fecha_vencimiento) - hoy) / 86400000
+      (fechaLocal(cuota.fecha_vencimiento) - hoy) / 86400000
     );
     return dias >= 0 && dias <= 10;
   });
   const chequesVencidos = chequesPendientes.filter(
-    (cheque) => new Date(cheque.fecha_vencimiento) < hoy
+    (cheque) => fechaLocal(cheque.fecha_vencimiento) < hoy
   );
   const chequesProximos = chequesPendientes.filter((cheque) => {
     const dias = Math.ceil(
-      (new Date(cheque.fecha_vencimiento) - hoy) / 86400000
+      (fechaLocal(cheque.fecha_vencimiento) - hoy) / 86400000
     );
     return dias >= 0 && dias <= 10;
   });
@@ -382,7 +383,7 @@ export default function CuentasPorCobrar() {
   const colorFila = (cuota) => {
     if (cuota.pagada) return "bg-green-100";
     const dias = Math.ceil(
-      (new Date(cuota.fecha_vencimiento) - hoy) / 86400000
+      (fechaLocal(cuota.fecha_vencimiento) - hoy) / 86400000
     );
     if (dias < 0) return "bg-red-100";
     if (dias <= 10) return "bg-yellow-100";
@@ -392,7 +393,7 @@ export default function CuentasPorCobrar() {
   const colorFilaCheque = (cheque) => {
     if (cheque.cobrado) return "bg-green-100";
     const dias = Math.ceil(
-      (new Date(cheque.fecha_vencimiento) - hoy) / 86400000
+      (fechaLocal(cheque.fecha_vencimiento) - hoy) / 86400000
     );
     if (dias < 0) return "bg-red-100";
     if (dias <= 10) return "bg-yellow-100";
@@ -468,7 +469,7 @@ export default function CuentasPorCobrar() {
                           <td className="border p-2 min-w-64">{cuota.productos_resumen}</td>
                           <td className="border p-2">Cuota {cuota.numero_cuota} de {cuota.cantidad_cuotas}</td>
                           <td className="border p-2">${Number(cuota.monto).toLocaleString("es-AR")}</td>
-                          <td className="border p-2">{new Date(cuota.fecha_vencimiento).toLocaleDateString("es-AR")}</td>
+                          <td className="border p-2">{fechaLocal(cuota.fecha_vencimiento).toLocaleDateString("es-AR")}</td>
                           <td className="border p-2">{cuota.pagada ? "Pagada" : "Pendiente"}</td>
                           <td className="border p-2">
                             {cuota.pagada ? (
@@ -541,7 +542,7 @@ export default function CuentasPorCobrar() {
                           <tr key={cheque.id} className={colorFilaCheque(cheque)}>
                             <td className="border p-2">#{cheque.venta_id}</td>
                             <td className="border p-2">Cheque {cheque.numero_cheque} de {cheque.cantidad_cheques}</td>
-                            <td className="border p-2">{new Date(cheque.fecha_vencimiento).toLocaleDateString("es-AR")}</td>
+                            <td className="border p-2">{fechaLocal(cheque.fecha_vencimiento).toLocaleDateString("es-AR")}</td>
                             <td className="border p-2">{cheque.cobrado ? "Cobrado" : "Pendiente"}</td>
                             <td className="border p-2">
                               {cheque.cobrado ? (
@@ -693,7 +694,7 @@ export default function CuentasPorCobrar() {
             <h2 className="text-2xl font-bold mb-3">Cobrar cheque {chequeCobrar.numero_cheque}</h2>
             <p className="mb-2"><strong>Cliente:</strong> {chequeCobrar.nombre} {chequeCobrar.apellido || ""}</p>
             <p className="mb-2"><strong>Venta:</strong> #{chequeCobrar.venta_id}</p>
-            <p className="mb-5"><strong>Vencimiento:</strong> {new Date(chequeCobrar.fecha_vencimiento).toLocaleDateString("es-AR")}</p>
+            <p className="mb-5"><strong>Vencimiento:</strong> {fechaLocal(chequeCobrar.fecha_vencimiento).toLocaleDateString("es-AR")}</p>
             <div className="flex gap-3">
               <button
                 type="button"

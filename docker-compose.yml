@@ -1,19 +1,21 @@
 services:
   db:
-    image: postgres:17-alpine
+    image: mysql:8.4
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: America/Argentina/Buenos_Aires
     volumes:
-      - stock_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql --protocol=tcp -h 127.0.0.1 -u $$MYSQL_USER -D $$MYSQL_DATABASE -e 'SELECT 1'"]
       interval: 5s
       timeout: 5s
-      retries: 10
-
+      retries: 30
+      start_period: 30s
   app:
     build: .
     restart: unless-stopped
@@ -23,10 +25,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: production
-      PORT: 3000
       DB_HOST: db
-      DB_PORT: 5432
+      DB_PORT: 3306
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -37,6 +37,6 @@ services:
       EMPLOYEE_NAME: ${EMPLOYEE_NAME}
       EMPLOYEE_EMAIL: ${EMPLOYEE_EMAIL}
       EMPLOYEE_PASSWORD: ${EMPLOYEE_PASSWORD}
-
+      TZ: America/Argentina/Buenos_Aires
 volumes:
-  stock_data:
+  mysql_data:

@@ -13,3 +13,9 @@ backend/.env.*
 !backend/.env.example
 INICIAR-RAPIELECTRO.bat
 frontend/public/rappi-electro-logo.png
+
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+backups/
